@@ -8,6 +8,9 @@ void main() {
   runApp(const MyApp());
 }
 
+// Modo de tema elegido (sistema, claro u oscuro); se cambia desde la lista
+final temaApp = ValueNotifier<ThemeMode>(ThemeMode.system);
+
 // Color base de la app (índigo / morado)
 const _colorSemilla = Color(0xFF5B5BD6);
 
@@ -74,20 +77,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mis tareas',
-      debugShowCheckedModeBanner: false,
-      theme: _crearTema(Brightness.light),
-      darkTheme: _crearTema(Brightness.dark),
-      themeMode: ThemeMode.system, // sigue el modo del celular
-      // Textos de Material (calendario, botones) en español
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('es')],
-      home: const ListaTareasScreen(),
+    // Se reconstruye cuando el usuario cambia entre modo claro y oscuro
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: temaApp,
+      builder: (context, modo, _) => MaterialApp(
+        title: 'Mis tareas',
+        debugShowCheckedModeBanner: false,
+        theme: _crearTema(Brightness.light),
+        darkTheme: _crearTema(Brightness.dark),
+        themeMode: modo, // al inicio sigue el modo del celular
+        // Textos de Material (calendario, botones) en español
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('es')],
+        home: const ListaTareasScreen(),
+      ),
     );
   }
 }

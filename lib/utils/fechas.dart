@@ -13,6 +13,16 @@ String formatearFecha(DateTime fecha) {
   return '$dia/$mes/${fecha.year}';
 }
 
+// Texto amigable según cuántos días faltan: "Hoy", "Mañana", "En 3 días"
+// Devuelve null si la fecha ya pasó (eso lo indica el chip "Vencida")
+String? fechaRelativa(DateTime fecha) {
+  final dias = (fecha.difference(hoy()).inHours / 24).round();
+  if (dias < 0) return null;
+  if (dias == 0) return 'Hoy';
+  if (dias == 1) return 'Mañana';
+  return 'En $dias días';
+}
+
 // Convierte texto dd/MM/yyyy a DateTime (null si no es válido)
 DateTime? leerFecha(String texto) {
   final partes = texto.split('/');

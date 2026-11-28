@@ -68,8 +68,7 @@ class _FormTareaScreenState extends State<FormTareaScreen> {
   Future<void> _elegirFecha() async {
     final actual = leerFecha(_fecha);
     // initialDate nunca puede ser menor que firstDate (hoy)
-    final inicial =
-        (actual == null || actual.isBefore(hoy())) ? hoy() : actual;
+    final inicial = (actual == null || actual.isBefore(hoy())) ? hoy() : actual;
 
     final elegida = await showDatePicker(
       context: context,

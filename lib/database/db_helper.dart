@@ -1,5 +1,4 @@
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/tarea.dart';
@@ -18,10 +17,10 @@ class DBHelper {
     return _database!;
   }
 
-  // Abre (o crea) el archivo de la base de datos
+  // Abre (o crea) el archivo de la base de datos en la carpeta de BD de la app
   Future<Database> _initDB() async {
-    final directorio = await getApplicationDocumentsDirectory();
-    final ruta = join(directorio.path, 'tareas.db');
+    final directorio = await getDatabasesPath();
+    final ruta = join(directorio, 'tareas.db');
     return await openDatabase(ruta, version: 1, onCreate: _crearTabla);
   }
 
@@ -48,8 +47,10 @@ class DBHelper {
   // READ: obtiene todas las tareas (pendientes primero, completadas al final)
   Future<List<Tarea>> obtenerTodas() async {
     final db = await database;
-    final resultado =
-        await db.query('tareas', orderBy: 'completada ASC, id DESC');
+    final resultado = await db.query(
+      'tareas',
+      orderBy: 'completada ASC, id DESC',
+    );
     return resultado.map((fila) => Tarea.fromMap(fila)).toList();
   }
 
@@ -62,6 +63,12 @@ class DBHelper {
       where: 'id = ?',
       whereArgs: [tarea.id],
     );
+  }
+
+  // Vuelve a insertar una tarea eliminada con su mismo id (botón "Deshacer")
+  Future<int> restaurar(Tarea tarea) async {
+    final db = await database;
+    return await db.insert('tareas', tarea.toMap());
   }
 
   // DELETE: elimina una tarea según su id
