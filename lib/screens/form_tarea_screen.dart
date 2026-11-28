@@ -125,6 +125,8 @@ class _FormTareaScreenState extends State<FormTareaScreen> {
         ),
         body: Form(
           key: _formKey,
+          // Después del primer intento, revalida mientras el usuario escribe
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           // ListView permite hacer scroll cuando sale el teclado
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),

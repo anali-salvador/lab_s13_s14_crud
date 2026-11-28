@@ -432,6 +432,8 @@ class _ListaTareasScreenState extends State<ListaTareasScreen> {
         controller: _buscadorCtrl,
         textInputAction: TextInputAction.search,
         onChanged: (valor) => setState(() => _busqueda = valor),
+        // Tocar fuera del buscador cierra el teclado
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           hintText: 'Buscar tareas...',
           prefixIcon: const Icon(Icons.search),
@@ -459,6 +461,7 @@ class _ListaTareasScreenState extends State<ListaTareasScreen> {
                   tooltip: 'Limpiar',
                   onPressed: () {
                     _buscadorCtrl.clear();
+                    FocusScope.of(context).unfocus(); // cierra el teclado
                     setState(() => _busqueda = '');
                   },
                 ),
@@ -586,10 +589,11 @@ class _ListaTareasScreenState extends State<ListaTareasScreen> {
             'No hay tareas en este filtro.',
           );
 
-    return Center(
+    // SingleChildScrollView evita que se desborde cuando el teclado está abierto
+    return SingleChildScrollView(
       key: ValueKey('vacio-$_filtro-$buscando'),
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.fromLTRB(32, 48, 32, 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
