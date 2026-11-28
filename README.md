@@ -62,3 +62,11 @@ CREATE TABLE tareas (
 flutter pub get
 flutter run        # con un celular Android conectado (depuración USB) o un emulador
 ```
+
+## Capturas
+
+La app corriendo en un celular Android. Todas las pantallas están en la carpeta [`capturas/`](capturas/).
+
+| Lista | Nueva tarea | Editar | Eliminar |
+|-------|-------------|--------|----------|
+| <img src="capturas/07_lista_tareas.png" width="180"> | <img src="capturas/05_form_lleno.png" width="180"> | <img src="capturas/13_editar_cambios.png" width="180"> | <img src="capturas/16_dialogo_eliminar.png" width="180"> |
